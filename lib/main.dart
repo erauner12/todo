@@ -1,6 +1,5 @@
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/material.dart';
-import 'package:todo/l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -14,6 +13,7 @@ import 'package:todo/data/models/duration_model.dart';
 import 'package:todo/data/models/project_model_response.dart';
 import 'package:todo/data/models/sync_model.dart';
 import 'package:todo/data/sync_manager.dart';
+import 'package:todo/l10n/app_localizations.dart';
 import 'package:todo/presentation/route/app_router.dart';
 
 import 'core/di/di.dart';
@@ -47,7 +47,8 @@ class MyApp extends StatefulWidget {
   final bool isDarkTheme;
   final Locale initialLocale;
 
-  MyApp({super.key, required this.isDarkTheme, required this.initialLocale});
+  const MyApp(
+      {super.key, required this.isDarkTheme, required this.initialLocale});
 
   static void setLocale(BuildContext context, Locale newLocale) {
     _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
