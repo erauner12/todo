@@ -1,16 +1,20 @@
 import 'package:dio/dio.dart';
+import 'package:todo/core/util/storage.dart';
 import 'package:uuid/uuid.dart';
 
-Dio createDio(String token) {
+Dio createDio(Storage storage) {
   final dio = Dio();
 
   dio.options.headers = {
-    'Authorization': 'Bearer $token',
     'Content-Type': 'application/json',
   };
   dio.interceptors.add(
     InterceptorsWrapper(
-      onRequest: (options, handler) {
+      onRequest: (options, handler) async {
+        final token = await storage.getApiToken();
+        if (token != null && token.isNotEmpty) {
+          options.headers['Authorization'] = 'Bearer $token';
+        }
         // Add X-Request-Id header
         options.headers['X-Request-Id'] = const Uuid().v4();
         return handler.next(options);

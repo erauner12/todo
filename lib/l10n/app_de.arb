@@ -37,5 +37,7 @@
   "pleaseFillInAllFields": "Bitte füllen Sie alle Felder aus!",
   "totalTime": "Gesamtzeit",
   "theDatesCannotBeBeforeToday": "Die Daten dürfen nicht vor heute liegen.",
-  "endDateCannotBeBeforeStart": "Das Enddatum darf nicht vor dem Startdatum liegen."
+  "endDateCannotBeBeforeStart": "Das Enddatum darf nicht vor dem Startdatum liegen.",
+  "saveAndContinue": "Speichern und fortfahren",
+  "enterApiToken": "Todoist API-Token"
 }

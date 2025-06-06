@@ -9,14 +9,14 @@ import 'package:todo/presentation/views/task_tile.dart';
 
 import '../bloc/task/task_event.dart';
 
-class TaskHistory extends StatefulWidget {
-  const TaskHistory({super.key});
+class TaskHistoryPage extends StatefulWidget {
+  const TaskHistoryPage({super.key});
 
   @override
-  State<TaskHistory> createState() => _TaskHistoryState();
+  State<TaskHistoryPage> createState() => _TaskHistoryPageState();
 }
 
-class _TaskHistoryState extends BaseState<TaskHistory> {
+class _TaskHistoryPageState extends BaseState<TaskHistoryPage> {
   @override
   void initState() {
     super.initState();

@@ -18,8 +18,16 @@ class Storage {
     await saveData(StorageKey.selectedLanguage, languageCode);
   }
 
+  Future<void> saveApiToken(String token) async {
+    await saveData(StorageKey.apiToken, token);
+  }
+
   Future<String?> getLanguage() async {
     return await getData(StorageKey.selectedLanguage);
+  }
+
+  Future<String?> getApiToken() async {
+    return await getData<String>(StorageKey.apiToken);
   }
 
   Future<T?> getData<T>(String key) async {

@@ -128,4 +128,10 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get endDateCannotBeBeforeStart =>
       'Das Enddatum darf nicht vor dem Startdatum liegen.';
+
+  @override
+  String get saveAndContinue => 'Speichern und fortfahren';
+
+  @override
+  String get enterApiToken => 'Todoist API-Token';
 }

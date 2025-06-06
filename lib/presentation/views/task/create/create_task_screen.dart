@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo/core/constants/refresh_notifier.dart';
 import 'package:todo/core/di/di.dart';
 import 'package:todo/core/util/date_time_convert.dart';
 import 'package:todo/domain/entities/project.dart';
@@ -46,7 +47,7 @@ class _AddTaskScreen extends BaseState<CreateTaskScreen> {
       child: BlocConsumer<CreateTaskBloc, CreateTaskState>(
         listener: (context, state) {
           if (state is CreateTaskSuccessState) {
-            refreshNotifier = true;
+            refreshNotifier.value = true;
             router.pop();
           }
         },

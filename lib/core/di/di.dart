@@ -49,11 +49,11 @@ import '../../presentation/views/task/create/project_provider_impl.dart';
 
 final getIt = GetIt.instance;
 
-Future<void> setupLocator(String token) async {
-  final dio = createDio(token);
-  getIt.registerLazySingleton<Dio>(() => dio);
-
+Future<void> setupLocator() async {
   getIt.registerLazySingleton<Storage>(() => Storage());
+
+  final dio = createDio(getIt<Storage>());
+  getIt.registerLazySingleton<Dio>(() => dio);
 
   getIt.registerLazySingleton<AppRouter>(
       () => AppRouter(storage: getIt<Storage>()));

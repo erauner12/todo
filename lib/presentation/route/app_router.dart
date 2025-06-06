@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:todo/core/di/di.dart';
 import 'package:todo/core/util/storage.dart';
-import 'package:todo/presentation/bloc/task/task_bloc.dart';
-import 'package:todo/presentation/bloc/task/task_event.dart';
-import 'package:todo/presentation/bloc/update_task/update_task_bloc.dart';
-import 'package:todo/presentation/bloc/update_task/update_task_event.dart';
 import 'package:todo/presentation/route/rout_paths.dart';
-import 'package:todo/presentation/views/project_page.dart';
+import 'package:todo/presentation/views/projects_page.dart';
+import 'package:todo/presentation/views/settings/token_setup_page.dart';
 import 'package:todo/presentation/views/task/create/create_task_screen.dart';
 import 'package:todo/presentation/views/task/update/update_task_screen.dart';
-import 'package:todo/presentation/views/task_history.dart';
+import 'package:todo/presentation/views/task_history_page.dart';
 import 'package:todo/presentation/views/tasks_page.dart';
 
-import '../bloc/comment/comment_bloc.dart';
+// Note: Assuming ProjectsPage and TaskHistoryPage exist.
+// If not, their imports and usage will need to be adjusted.
 
 class AppRouter {
   final Storage storage;
@@ -24,33 +20,25 @@ class AppRouter {
   late final GoRouter router = GoRouter(
     initialLocation: AppRoutePath.homeRoute,
     routes: [
-      // Home Route
       GoRoute(
         path: AppRoutePath.homeRoute,
         builder: (context, state) => const ProjectsPage(),
       ),
-
-      // Task List Route
       GoRoute(
-        path: '${AppRoutePath.taskListRoute}/:taskId',
-        builder: (context, state) {
-          final taskId = state.pathParameters['taskId'];
-          if (taskId == null || taskId.isEmpty) {
-            return const Scaffold(
-              body: Center(child: Text('Project ID is missing')),
-            );
-          }
-          return BlocProvider(
-              create: (context) =>
-                  getIt<TasksBloc>()..add(FetchTasksEvent(taskId)),
-              child: TasksPage(projectId: taskId));
-        },
+        path: AppRoutePath.tokenSetupRoute,
+        builder: (context, state) => const TokenSetupPage(),
       ),
       GoRoute(
         path: AppRoutePath.taskHistory,
-        builder: (context, state) => const TaskHistory(),
+        builder: (context, state) => const TaskHistoryPage(),
       ),
-      // Add Task Route
+      GoRoute(
+        path: '${AppRoutePath.taskListRoute}/:projectId',
+        builder: (context, state) {
+          final id = state.pathParameters['projectId']!;
+          return TasksPage(projectId: id);
+        },
+      ),
       GoRoute(
         path: AppRoutePath.createTaskRoute,
         builder: (context, state) => const CreateTaskScreen(),
@@ -58,32 +46,25 @@ class AppRouter {
       GoRoute(
         path: '${AppRoutePath.updateTaskRoute}/:taskId',
         builder: (context, state) {
-          final taskId = state.pathParameters['taskId'];
-          if (taskId == null || taskId.isEmpty) {
-            return const Scaffold(
-              body: Center(child: Text('Task ID is missing')),
-            );
-          }
-          return BlocProvider(
-            create: (context) => getIt<CommentBloc>()
-              ..add(FetchCommentsEvent(taskId: taskId, projectId: '')),
-            child: BlocProvider(
-              create: (context) =>
-                  getIt<UpdateTaskBloc>()..add(FetchTask(taskId: taskId)),
-              child: UpdateTaskScreen(taskId: taskId),
-            ),
-          );
+          final id = state.pathParameters['taskId']!;
+          return UpdateTaskScreen(taskId: id);
         },
       ),
     ],
+    redirect: (BuildContext context, GoRouterState state) async {
+      final token = await storage.getApiToken();
+      final hasToken = token != null && token.isNotEmpty;
 
-    // Error Page for unknown routes
-    errorBuilder: (context, state) => Scaffold(
-      appBar: AppBar(title: const Text('404 - Page not found')),
-      body: const Center(
-          child: Text('404 - The page you are looking for does not exist.')),
-    ),
+      final isGoingToSetup = state.matchedLocation == AppRoutePath.tokenSetupRoute;
+
+      // If there's no token and the user is not trying to go to the setup page,
+      // redirect them to the setup page.
+      if (!hasToken && !isGoingToSetup) {
+        return AppRoutePath.tokenSetupRoute;
+      }
+
+      // No redirect needed in other cases.
+      return null;
+    },
   );
 }
-
-bool refreshNotifier = false;

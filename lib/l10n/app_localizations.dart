@@ -331,6 +331,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'End date cannot be before start.'**
   String get endDateCannotBeBeforeStart;
+
+  /// No description provided for @saveAndContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Save and Continue'**
+  String get saveAndContinue;
+
+  /// No description provided for @enterApiToken.
+  ///
+  /// In en, this message translates to:
+  /// **'Todoist API Token'**
+  String get enterApiToken;
 }
 
 class _AppLocalizationsDelegate

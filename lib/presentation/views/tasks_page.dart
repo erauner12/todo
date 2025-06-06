@@ -4,6 +4,7 @@ import 'package:flutter_boardview/board_item.dart';
 import 'package:flutter_boardview/board_list.dart';
 import 'package:flutter_boardview/boardview.dart';
 import 'package:flutter_boardview/boardview_controller.dart';
+import 'package:todo/core/constants/refresh_notifier.dart';
 import 'package:todo/core/util/date_time_convert.dart';
 import 'package:todo/data/models/task_data_request.dart';
 import 'package:todo/domain/entities/task.dart';
@@ -36,8 +37,8 @@ class _TasksPageState extends BaseState<TasksPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (refreshNotifier) {
-      refreshNotifier = false;
+    if (refreshNotifier.value) {
+      refreshNotifier.value = false;
       context.read<TasksBloc>().add(FetchTasksEvent(widget.projectId));
     }
 

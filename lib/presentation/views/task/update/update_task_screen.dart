@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo/core/constants/refresh_notifier.dart';
 import 'package:todo/core/util/date_time_convert.dart';
 import 'package:todo/data/models/task_data_request.dart';
 import 'package:todo/data/models/task_model_response.dart';
@@ -101,8 +102,10 @@ class _UpdateTaskScreenState extends BaseState<UpdateTaskScreen> {
           }
           return PopScope(
             canPop: true,
-            onPopInvokedWithResult: (bool didPop, Object? result) {
-              refreshNotifier = true;
+            onPopInvoked: (bool didPop) {
+              if (didPop) {
+                refreshNotifier.value = true;
+              }
             },
             child: Scaffold(
               resizeToAvoidBottomInset: true,

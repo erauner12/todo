@@ -22,7 +22,7 @@ class _FABState extends BaseState<FAB> {
           context: buildContext,
           builder: (BuildContext dialogContext) {
             return AlertDialog(
-              title: Text(localization.createProject ?? ''),
+              title: Text(localization.createProject),
               content: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -46,11 +46,11 @@ class _FABState extends BaseState<FAB> {
                           Navigator.of(dialogContext).pop();
                         } else {
                           showSnackBar(
-                              localization.pleaseEnterProjectName ?? '');
+                              localization.pleaseEnterProjectName);
                         }
                       },
                       icon: const Icon(Icons.add),
-                      label: Text(localization.createProject ?? ''),
+                      label: Text(localization.createProject),
                     ),
                   ],
                 ),

@@ -110,6 +110,18 @@ class _AppDrawerState extends BaseState<AppDrawer> {
                 ),
               ),
 
+              // API Token
+              ListTile(
+                onTap: () {
+                  context.push(AppRoutePath.tokenSetupRoute);
+                },
+                leading: const Icon(Icons.vpn_key, color: Colors.white),
+                title: const Text(
+                  'API Token', // Should be localized
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+
               // Dark Mode Switch
               ListTile(
                 leading: const Icon(Icons.brightness_6, color: Colors.white),
@@ -188,6 +200,22 @@ class _AppDrawerState extends BaseState<AppDrawer> {
                     onTap: () => _changeLanguage('de'),
                   ),
                 ],
+              ),
+
+              const Divider(color: Colors.white54),
+              ListTile(
+                onTap: () async {
+                  await storage.saveApiToken('');
+                  if (mounted) {
+                    // Use go to clear navigation stack and go to setup
+                    context.go(AppRoutePath.tokenSetupRoute);
+                  }
+                },
+                leading: const Icon(Icons.logout, color: Colors.white),
+                title: const Text(
+                  'Sign Out', // Should be localized
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
 
             ],

@@ -126,4 +126,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get endDateCannotBeBeforeStart => 'End date cannot be before start.';
+
+  @override
+  String get saveAndContinue => 'Save and Continue';
+
+  @override
+  String get enterApiToken => 'Todoist API Token';
 }
