@@ -27,14 +27,15 @@ class ProjectsRepositoryImpl
   @override
   Future<Either<Failure, List<Project>>> getProjects() async {
     try {
-      final localProjects = await localDataSource.getProjects();
-      if (localProjects.isNotEmpty) {
-        return Right(localProjects.map((m) => m.toEntity()).toList());
+      if (await isConnected()) {
+        final remote = await remoteDataSource.getProjects();
+        await localDataSource.saveProjects(remote);
+        return Right(remote.map((m) => m.toEntity()).toList());
       }
 
-      final remoteProjects = await remoteDataSource.getProjects();
-      await localDataSource.saveProjects(remoteProjects);
-      return Right(remoteProjects.map((m) => m.toEntity()).toList());
+      // offline fallback
+      final local = await localDataSource.getProjects();
+      return Right(local.map((m) => m.toEntity()).toList());
     } catch (e) {
       return const Left(ServerFailure(message: 'Unexpected Error'));
     }

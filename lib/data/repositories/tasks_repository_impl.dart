@@ -25,17 +25,16 @@ class TasksRepositoryImpl with ConnectivityUtil implements TasksRepository {
   @override
   Future<Either<Failure, List<TaskEntity>>> getTasks(String? projectId) async {
     try {
-      final localTasks = await localDataSource.getTasks(projectId: projectId);
-      if (localTasks.isNotEmpty) {
-        return Right(localTasks.map((t) => t.toEntity()).toList());
+      if (await isConnected()) {
+        final remoteTasks =
+            await remoteDataSource.getTasks(projectId: projectId!);
+        await localDataSource.saveTasks(remoteTasks);
+        return Right(remoteTasks.map((t) => t.toEntity()).toList());
       }
 
-      final remoteTasks =
-          await remoteDataSource.getTasks(projectId: projectId!);
-      await localDataSource.saveTasks(remoteTasks);
-      return Right(remoteTasks.map((t) => t.toEntity()).toList());
-    } on ServerFailure catch (e) {
-      return Left(e);
+      // offline fallback
+      final localTasks = await localDataSource.getTasks(projectId: projectId);
+      return Right(localTasks.map((t) => t.toEntity()).toList());
     } catch (e) {
       return Left(ServerFailure(message: 'Unexpected Error ${e.toString()}'));
     }

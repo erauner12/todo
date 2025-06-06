@@ -91,8 +91,8 @@ class SyncManager {
     Connectivity().onConnectivityChanged.listen((result) async {
       print('sync connectivity ');
 
-      if (result.first == ConnectivityResult.mobile ||
-          result.first == ConnectivityResult.wifi) {
+      if (result == ConnectivityResult.mobile ||
+          result == ConnectivityResult.wifi) {
         print('sync connectivity true');
 
         await sync();
