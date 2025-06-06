@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
+import 'package:todo/l10n/app_localizations.dart';
 
 /// BaseState is a reusable class that provides common functionality
 /// for other widgets in the app by extending StatefulWidget.

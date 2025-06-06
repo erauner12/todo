@@ -33,7 +33,7 @@ void main() async {
   Hive.registerAdapter(CommentModelAdapter());
   const token = '396cfbb60d2860647d5451920dc1962eb2505c01';
   await setupLocator(token);
-  bool isDarkTheme = await storage.getData<bool>(StorageKey.IS_DARK_THEME) ?? false;
+  bool isDarkTheme = await storage.getData<bool>(StorageKey.isDarkTheme) ?? false;
   String? languageCode = await storage.getLanguage();
   final syncManager = getIt<SyncManager>();
   syncManager.monitorConnection();
@@ -51,7 +51,7 @@ class MyApp extends StatefulWidget {
 
   static void setLocale(BuildContext context, Locale newLocale) {
     _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
-    state.setLocale(newLocale);
+    state?.setLocale(newLocale);
   }
 
   @override

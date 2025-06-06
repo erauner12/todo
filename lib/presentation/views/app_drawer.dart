@@ -19,7 +19,7 @@ class AppDrawer extends StatefulWidget {
 
 class _AppDrawerState extends BaseState<AppDrawer> {
   bool isDarkTheme = true;
-  String selectedLanguage = 'EN';
+  String selectedLanguage = 'en';
   bool isLanguageExpanded = false;
   final storage = GetIt.I<Storage>();
 
@@ -31,9 +31,9 @@ class _AppDrawerState extends BaseState<AppDrawer> {
 
   Future<void> _loadPreferences() async {
     String? savedLanguage = await storage.getLanguage();
-    bool? savedTheme = await storage.getData<bool>(StorageKey.IS_DARK_THEME);
+    bool? savedTheme = await storage.getData<bool>(StorageKey.isDarkTheme);
     setState(() {
-      selectedLanguage = savedLanguage ?? 'EN';
+      selectedLanguage = savedLanguage ?? 'en';
       isDarkTheme = savedTheme ?? false;
     });
   }
@@ -49,7 +49,7 @@ class _AppDrawerState extends BaseState<AppDrawer> {
   }
 
   Future<bool> _getDarkTheme() async {
-    final theme = await storage.getData<bool>(StorageKey.IS_DARK_THEME);
+    final theme = await storage.getData<bool>(StorageKey.isDarkTheme);
     return theme ?? false; // Provide a default value if null
   }
 
@@ -131,7 +131,7 @@ class _AppDrawerState extends BaseState<AppDrawer> {
                           activeColor: Colors.white,
                           onChanged: (value) async {
                             await storage.saveData(
-                                StorageKey.IS_DARK_THEME, value);
+                                StorageKey.isDarkTheme, value);
                             ThemeSwitcher.of(context).changeTheme(
                               theme: value ? darkTheme : lightTheme,
                             );
@@ -154,7 +154,7 @@ class _AppDrawerState extends BaseState<AppDrawer> {
                   style: const TextStyle(color: Colors.white),
                 ),
                 trailing: Text(
-                  selectedLanguage,
+                  selectedLanguage.toUpperCase(),
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.white70,

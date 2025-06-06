@@ -15,24 +15,26 @@ class Storage {
   }
 
   Future<void> saveLanguage(String languageCode) async {
-    await saveData(StorageKey.SELECTED_LANGUAGE, languageCode);
+    await saveData(StorageKey.selectedLanguage, languageCode);
   }
 
   Future<String?> getLanguage() async {
-    return await getData(StorageKey.SELECTED_LANGUAGE);
+    return await getData(StorageKey.selectedLanguage);
   }
 
   Future<T?> getData<T>(String key) async {
     String? value = await _secureStorage.read(key: key);
 
+    if (value == null) return null;
+
     if (T == String) {
       return value as T;
     } else if (T == int) {
-      return int.tryParse(value) as T?;
+      return value != null ? int.tryParse(value) as T? : null;
     } else if (T == double) {
-      return double.tryParse(value) as T?;
+      return value != null ? double.tryParse(value) as T? : null;
     } else if (T == bool) {
-      return (value.toLowerCase() == 'true') as T?;
+      return value?.toLowerCase() == 'true' ? true as T? : null;
     } else {
       throw Exception('Unsupported type');
     }
