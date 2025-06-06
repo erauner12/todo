@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:todo/core/constants/constants_value.dart';
 import 'package:todo/core/di/di.dart';
 import 'package:todo/core/theme/theme.dart';
+import 'package:todo/core/utils/todoist_color_mapper.dart';
 import 'package:todo/presentation/bloc/project/project_bloc.dart';
 import 'package:todo/presentation/bloc/project/project_event.dart';
 import 'package:todo/presentation/bloc/project/project_state.dart';
@@ -80,6 +81,12 @@ class _ProjectsPageState extends BaseState<ProjectsPage> {
                     itemCount: state.projects.length,
                     itemBuilder: (gridContext, index) {
                       final project = state.projects[index];
+                      // Primary color straight from Todoist
+                      final base = todoistColor(project.color,
+                          defaultColor: theme.primaryColor);
+
+                      // A lighter tint for nicer depth. 0.4 retains readability across the palette.
+                      final lighter = Color.lerp(base, Colors.white, 0.4)!;
                       return InkWell(
                         onTap: () {
                           WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -100,10 +107,7 @@ class _ProjectsPageState extends BaseState<ProjectsPage> {
                           child: Container(
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
-                                colors: [
-                                  gradiantColors[index],
-                                  theme.primaryColor
-                                ],
+                                colors: [lighter, base],
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter,
                               ),

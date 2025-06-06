@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:todo/core/di/di.dart';
 import 'package:todo/core/util/storage.dart';
+import 'package:todo/presentation/bloc/comment/comment_bloc.dart';
+import 'package:todo/presentation/bloc/task/task_bloc.dart';
+import 'package:todo/presentation/bloc/task/task_event.dart';
+import 'package:todo/presentation/bloc/update_task/update_task_bloc.dart';
+import 'package:todo/presentation/bloc/update_task/update_task_event.dart';
 import 'package:todo/presentation/route/rout_paths.dart';
 import 'package:todo/presentation/views/projects_page.dart';
 import 'package:todo/presentation/views/settings/token_setup_page.dart';
@@ -36,7 +43,10 @@ class AppRouter {
         path: '${AppRoutePath.taskListRoute}/:projectId',
         builder: (context, state) {
           final id = state.pathParameters['projectId']!;
-          return TasksPage(projectId: id);
+          return BlocProvider<TasksBloc>(
+            create: (_) => getIt<TasksBloc>()..add(FetchTasksEvent(id)),
+            child: TasksPage(projectId: id),
+          );
         },
       ),
       GoRoute(
@@ -47,7 +57,22 @@ class AppRouter {
         path: '${AppRoutePath.updateTaskRoute}/:taskId',
         builder: (context, state) {
           final id = state.pathParameters['taskId']!;
-          return UpdateTaskScreen(taskId: id);
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider<UpdateTaskBloc>(
+                create: (_) =>
+                    getIt<UpdateTaskBloc>()..add(FetchTask(taskId: id)),
+              ),
+              BlocProvider<CommentBloc>(
+                create: (_) => getIt<CommentBloc>()
+                  ..add(FetchCommentsEvent(
+                    projectId: '', // projectId not needed for API
+                    taskId: id,
+                  )),
+              ),
+            ],
+            child: UpdateTaskScreen(taskId: id),
+          );
         },
       ),
     ],
