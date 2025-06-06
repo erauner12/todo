@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:todo/l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 
 /// BaseStatelessWidget provides common utilities and methods for stateless widgets

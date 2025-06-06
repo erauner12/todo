@@ -43,7 +43,7 @@ final ThemeData lightTheme = ThemeData(
     color: primaryColor,
     foregroundColor: onPrimaryColor,
   ),
-  cardTheme: const CardTheme(
+  cardTheme: const CardThemeData(
     color: cardColor,
     elevation: 2,
   ),
@@ -121,7 +121,7 @@ final ThemeData darkTheme = ThemeData(
     color: darkPrimaryColor,
     foregroundColor: darkOnPrimaryColor,
   ),
-  cardTheme: const CardTheme(
+  cardTheme: const CardThemeData(
     color: darkCardColor,
     elevation: 2,
   ),

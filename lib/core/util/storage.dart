@@ -24,9 +24,6 @@ class Storage {
 
   Future<T?> getData<T>(String key) async {
     String? value = await _secureStorage.read(key: key);
-    if (value == null) {
-      return null;
-    }
 
     if (T == String) {
       return value as T;
